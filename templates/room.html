@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Room</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="room-container">
+        <div class="room-header">
+            <h2>Meeting Room: <span id="roomIdDisplay">{{ room_id }}</span></h2>
+            <div class="room-controls">
+                <button id="toggleVideoBtn" class="control-btn">
+                    <span class="material-icons">videocam</span>
+                </button>
+                <button id="toggleAudioBtn" class="control-btn">
+                    <span class="material-icons">mic</span>
+                </button>
+                <button id="leaveBtn" class="control-btn danger">
+                    <span class="material-icons">call_end</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="video-container" id="videoContainer">
+                <div class="video-item local-video">
+                    <video id="localVideo" autoplay muted playsinline></video>
+                    <div class="video-label">You</div>
+                </div>
+                <!-- Remote videos will be added here dynamically -->
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h3>Chat</h3>
+                    <div class="participants">
+                        <span id="participantCount">0</span> participants
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type a message...">
+                    <button id="sendBtn">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/webrtc.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script>
+        // Initialize the room with the room ID
+        const roomId = "{{ room_id }}";
+        const username = localStorage.getItem('username') || 'Anonymous';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeRoom(roomId, username);
+        });
+        
+        // Handle leave button
+        document.getElementById('leaveBtn').addEventListener('click', () => {
+            leaveRoom();
+            window.location.href = '/';
+        });
+    </script>
+</body>
+</html>
+

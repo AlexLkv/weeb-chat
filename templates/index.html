@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Chat App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Video Chat App</h1>
+        <div class="join-container">
+            <h2>Join or Create a Meeting</h2>
+            <div class="form-group">
+                <label for="username">Your Name:</label>
+                <input type="text" id="username" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="roomId">Room ID (optional):</label>
+                <input type="text" id="roomId" placeholder="Enter room ID to join">
+            </div>
+            <div class="button-group">
+                <button id="createBtn" class="btn primary">Create New Room</button>
+                <button id="joinBtn" class="btn secondary">Join Room</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('createBtn').addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            if (!username) {
+                alert('Please enter your name');
+                return;
+            }
+            localStorage.setItem('username', username);
+            window.location.href = '/create-room';
+        });
+
+        document.getElementById('joinBtn').addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            const roomId = document.getElementById('roomId').value.trim();
+            
+            if (!username) {
+                alert('Please enter your name');
+                return;
+            }
+            
+            if (!roomId) {
+                alert('Please enter a room ID');
+                return;
+            }
+            
+            localStorage.setItem('username', username);
+            window.location.href = `/room/${roomId}`;
+        });
+    </script>
+</body>
+</html>
 
